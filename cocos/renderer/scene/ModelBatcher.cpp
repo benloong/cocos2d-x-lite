@@ -27,9 +27,11 @@
 #include "StencilManager.hpp"
 #include "assembler/RenderDataList.hpp"
 #include "NodeProxy.hpp"
+#include "assembler/AssemblerSprite.hpp"
 
 RENDERER_BEGIN
 
+#define OPTIMIZE_BATCH 1
 #define INIT_MODEL_LENGTH 16
 
 ModelBatcher::ModelBatcher(RenderFlow* flow)
@@ -96,6 +98,7 @@ void ModelBatcher::reset()
     
     _modelMat.set(Mat4::IDENTITY);
     _stencilMgr->reset();
+    _drawCmdList.clear();
 }
 
 void ModelBatcher::changeCommitState(CommitState state)
@@ -117,6 +120,20 @@ void ModelBatcher::changeCommitState(CommitState state)
 }
 
 void ModelBatcher::commit(NodeProxy* node, Assembler* assembler, int cullingMask)
+{
+#if OPTIMIZE_BATCH
+    DrawCmdInfo cmdInfo;
+    cmdInfo.assembler = assembler;
+    cmdInfo.cullingMask = cullingMask;
+    cmdInfo.node = node;
+    cmdInfo.customAssembler = nullptr;
+    _drawCmdList.push_back(cmdInfo);
+#else
+    _commit(node, assembler, cullingMask);
+#endif
+}
+
+void ModelBatcher::_commit(NodeProxy* node, Assembler* assembler, int cullingMask)
 {
     changeCommitState(CommitState::Common);
     
@@ -160,6 +177,20 @@ void ModelBatcher::commit(NodeProxy* node, Assembler* assembler, int cullingMask
 }
 
 void ModelBatcher::commitIA(NodeProxy* node, CustomAssembler* assembler, int cullingMask)
+{
+#if OPTIMIZE_BATCH
+    DrawCmdInfo cmdInfo;
+    cmdInfo.assembler = nullptr;
+    cmdInfo.cullingMask = cullingMask;
+    cmdInfo.node = node;
+    cmdInfo.customAssembler = assembler;
+    _drawCmdList.push_back(cmdInfo);
+#else
+    _commitIA(node, assembler, cullingMask);
+#endif
+}
+
+void ModelBatcher::_commitIA(NodeProxy* node, CustomAssembler* assembler, int cullingMask)
 {
     changeCommitState(CommitState::Custom);
 
@@ -220,6 +251,7 @@ void ModelBatcher::commitIA(NodeProxy* node, CustomAssembler* assembler, int cul
 
 void ModelBatcher::flushIA()
 {
+    _flush();
     if (_commitState != CommitState::Custom)
     {
         return;
@@ -259,6 +291,7 @@ void ModelBatcher::flushIA()
 
 void ModelBatcher::flush()
 {
+    _flush();
     if (_commitState != CommitState::Common)
     {
         return;
@@ -308,6 +341,93 @@ void ModelBatcher::flush()
     _flow->getRenderScene()->addModel(model);
     
     _buffer->updateOffset();
+}
+ 
+void ModelBatcher::_flush()
+{
+#if OPTIMIZE_BATCH
+    for (auto i = 0; i < _drawCmdList.size(); i++)
+    {
+        auto node = _drawCmdList[i].node;
+
+        double hash = 0;
+        auto assembler = dynamic_cast<Assembler *>(node->getAssembler());
+        auto assemblerSprite = dynamic_cast<AssemblerSprite *>(node->getAssembler());
+        cocos2d::Rect aabb{};
+        // 计算绘制的顶点AABB
+        if (assembler && assembler->_datas->getMeshCount())
+        {
+            auto renderData = assembler->_datas->getRenderData(0);
+            float *vertices = (float *)renderData->getVertices();
+            uint32_t vertexCount = (uint32_t)renderData->getVBytes() / assembler->_bytesPerVertex;
+            float minX = vertices[0];
+            float maxX = minX;
+            float minY = vertices[1];
+            float maxY = minY;
+            for (auto v = 0; v < vertexCount; v++, vertices = (float *)(((uint8_t *)vertices) + assembler->_bytesPerVertex))
+            {
+                float x = vertices[0];
+                float y = vertices[1];
+                minX = std::min(minX, x);
+                minY = std::min(minY, y);
+                maxX = std::max(maxX, x);
+                maxY = std::max(maxY, y);
+            }
+
+            auto min = cocos2d::Vec3(minX, minY, 0);
+            auto max = cocos2d::Vec3(maxX, maxY, 0);
+            //AssemblerSprite的顶点是已经算好了世界坐标的点了的
+            if (!assemblerSprite)
+            {
+                node->getWorldMatrix().transformPoint(&min);
+                node->getWorldMatrix().transformPoint(&max);
+            }
+            aabb.setRect(min.x, min.y, max.x - min.x, max.y - min.y);
+            auto effect = assembler->getEffect(0);
+            if(effect) {
+                hash = effect->getHash();
+            }
+        }
+        _drawCmdList[i].aabb = aabb;
+        _drawCmdList[i].effectHash = hash;
+    }
+
+    //优化排列的绘制列表 更利于batch
+    _drawCmdListTemp.clear();
+    for (auto &drawCmdInfo : _drawCmdList)
+    {
+        auto index = _drawCmdListTemp.size();
+        for (auto i = _drawCmdListTemp.size(); i > 0; i--)
+        {
+            auto &node = _drawCmdListTemp[i - 1];
+            if (node.aabb.intersectsRect(drawCmdInfo.aabb))
+            {
+                break;
+            }
+            if (node.effectHash == drawCmdInfo.effectHash)
+            {
+                index = i;
+                break;
+            }
+        }
+        _drawCmdListTemp.insert(_drawCmdListTemp.begin() + index, drawCmdInfo);
+    }
+
+    _drawCmdList.clear();
+
+    for (auto &drawCmdInfo : _drawCmdListTemp)
+    {
+        if (drawCmdInfo.assembler)
+        {
+            _commit(drawCmdInfo.node, drawCmdInfo.assembler, drawCmdInfo.cullingMask);
+        }
+        else if (drawCmdInfo.customAssembler)
+        {
+            _commitIA(drawCmdInfo.node, drawCmdInfo.customAssembler, drawCmdInfo.cullingMask);
+        }
+    }
+    _drawCmdListTemp.clear();
+#endif
 }
 
 void ModelBatcher::startBatch()

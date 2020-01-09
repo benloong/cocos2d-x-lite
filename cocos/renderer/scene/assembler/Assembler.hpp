@@ -182,6 +182,7 @@ public:
         return _iaDatas.size();
     }
 protected:
+    friend class ModelBatcher;
     RenderDataList* _datas = nullptr;
     std::vector<IARenderData> _iaDatas;
     
