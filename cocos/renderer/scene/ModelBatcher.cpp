@@ -355,7 +355,7 @@ void ModelBatcher::_flush()
         auto assemblerSprite = dynamic_cast<AssemblerSprite *>(node->getAssembler());
         cocos2d::Rect aabb{};
         // 计算绘制的顶点AABB
-        if (assembler && assembler->_datas->getMeshCount())
+        if (assembler && assembler->_datas && assembler->_datas->getMeshCount())
         {
             auto renderData = assembler->_datas->getRenderData(0);
             float *vertices = (float *)renderData->getVertices();
