@@ -65,6 +65,7 @@ extern "C" {
         // nativeOnSizeChanged is firstly called before Application initiating.
         if (inst != nullptr) {
             inst->updateViewSize(width, height);
+            EventDispatcher::dispatchResizeEvent(width, height);
         }
     }
 }
