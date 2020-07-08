@@ -74,6 +74,9 @@ public:
     void preload(const std::string& filePath, const std::function<void(bool)>& callback);
 
     void setAudioFocusForAllPlayers(bool isFocus);
+
+    void onEnterBackground();
+    void onEnterForeground();
 private:
     // engine interfaces
     SLObjectItf _engineObject;

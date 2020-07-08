@@ -65,6 +65,8 @@ public:
     AudioCache* preload(const std::string& filePath, std::function<void(bool)> callback);
     void update(float dt);
 
+    void onEnterBackground() {}
+    void onEnterForeground() {}
 private:
     bool _checkAudioIdValid(int audioID);
     void _play2d(AudioCache *cache, int audioID);

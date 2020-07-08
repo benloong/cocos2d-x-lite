@@ -348,9 +348,17 @@ void AudioEngine::onEnterBackground() {
             _breakAudioID.push_back(it->first);
         }
     }
+    if(_audioEngineImpl)
+    {
+        _audioEngineImpl->onEnterBackground();
+    }
 }
 
 void AudioEngine::onEnterForeground() {
+    if(_audioEngineImpl)
+    {
+        _audioEngineImpl->onEnterForeground();
+    }
     auto itEnd = _breakAudioID.end();
     for (auto it = _breakAudioID.begin(); it != itEnd; ++it) {
         AudioEngine::resume(*it);
