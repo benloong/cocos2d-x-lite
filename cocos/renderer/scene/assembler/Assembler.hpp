@@ -185,6 +185,7 @@ public:
     inline void setCustomProperties(CustomProperties* customProp) { _customProp = customProp;};
     inline CustomProperties* getCustomProperties() { return _customProp;};
 protected:
+    friend class ModelBatcher;
     RenderDataList* _datas = nullptr;
     std::vector<IARenderData> _iaDatas;
     

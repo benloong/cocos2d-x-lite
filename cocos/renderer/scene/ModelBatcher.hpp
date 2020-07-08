@@ -133,6 +133,10 @@ public:
 private:
     void changeCommitState(CommitState state);
 private:
+    void _commit(NodeProxy* node, Assembler* handle, int cullingMask);
+    void _commitIA(NodeProxy* node, CustomAssembler* handle, int cullingMask);
+    void _flush();
+    
     int _modelOffset = 0;
     int _cullingMask = 0;
     bool _useModel = false;
@@ -152,6 +156,17 @@ private:
     InputAssembler _ia;
     std::vector<Model*> _modelPool;
     std::unordered_map<VertexFormat*, MeshBuffer*> _buffers;
+    
+    struct DrawCmdInfo {
+        Assembler * assembler;
+        NodeProxy * node;
+        CustomAssembler* customAssembler;
+        int cullingMask;
+        cocos2d::Rect aabb;
+        double effectHash;
+    };
+    std::vector<DrawCmdInfo> _drawCmdList;
+    std::vector<DrawCmdInfo> _drawCmdListTemp;
 };
 
 // end of scene group
