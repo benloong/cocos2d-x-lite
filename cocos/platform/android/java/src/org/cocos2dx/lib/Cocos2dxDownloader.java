@@ -92,7 +92,7 @@ public class Cocos2dxDownloader {
             downloader._httpClient = new OkHttpClient().newBuilder()
                     .followRedirects(true)
                     .followSslRedirects(true)
-                    .callTimeout(timeoutInSeconds, TimeUnit.SECONDS)
+                    .connectTimeout(timeoutInSeconds, TimeUnit.SECONDS)
                     .build();
         } else {
             downloader._httpClient = new OkHttpClient().newBuilder()

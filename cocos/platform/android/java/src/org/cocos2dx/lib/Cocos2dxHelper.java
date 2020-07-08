@@ -43,6 +43,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.Vibrator;
@@ -218,12 +219,7 @@ public class Cocos2dxHelper {
 
             sInited = true;
             
-            int versionCode = 1;
-            try {
-                versionCode = Cocos2dxActivity.getContext().getPackageManager().getPackageInfo(Cocos2dxHelper.getPackageName(), 0).versionCode;
-            } catch (NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            int versionCode = getObbVersion(getActivity());
             try {
                 Cocos2dxHelper.sOBBFile = APKExpansionSupport.getAPKExpansionZipFile(Cocos2dxActivity.getContext(), versionCode, 0);
             } catch (IOException e) {
@@ -237,12 +233,12 @@ public class Cocos2dxHelper {
     public static String getAssetsPath()
     {
         if (Cocos2dxHelper.sAssetsPath == "") {
-            int versionCode = 1;
-            try {
-                versionCode = Cocos2dxHelper.sActivity.getPackageManager().getPackageInfo(Cocos2dxHelper.sPackageName, 0).versionCode;
-            } catch (NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            int versionCode = Cocos2dxHelper.getObbVersion(getActivity());
+//            try {
+////                versionCode = Cocos2dxHelper.sActivity.getPackageManager().getPackageInfo(Cocos2dxHelper.sPackageName, 0).versionCode;
+//            } catch (NameNotFoundException e) {
+//                e.printStackTrace();
+//            }
             String pathToOBB = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/obb/" + Cocos2dxHelper.sPackageName + "/main." + versionCode + "." + Cocos2dxHelper.sPackageName + ".obb";
             File obbFile = new File(pathToOBB);
             if (obbFile.exists())
@@ -599,5 +595,46 @@ public class Cocos2dxHelper {
             e.printStackTrace();
         }
         return Surface.ROTATION_0;
+    }
+
+
+    public static final String OBB_VERSION_KEY = "android.obb.version";
+    public static final String OBB_FILE_SIZE = "android.obb.file_size";
+    public static final String OBB_ENABLED = "android.obb.enabled";
+
+    public static int getObbVersion(Context context){
+        try {
+            ApplicationInfo ai =  context.getPackageManager().getApplicationInfo(context.getApplicationInfo().packageName, PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            return bundle.getInt(OBB_VERSION_KEY, 1);
+        }
+        catch (PackageManager.NameNotFoundException e){
+            e.printStackTrace();
+            return 1;
+        }
+    }
+
+    public static int getObbFileSize(Context context){
+        try {
+            ApplicationInfo ai =  context.getPackageManager().getApplicationInfo(context.getApplicationInfo().packageName, PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            return bundle.getInt(OBB_FILE_SIZE, 1);
+        }
+        catch (PackageManager.NameNotFoundException e){
+            e.printStackTrace();
+            return 1;
+        }
+    }
+
+    public static boolean getObbEnabled(Context context){
+        try {
+            ApplicationInfo ai =  context.getPackageManager().getApplicationInfo(context.getApplicationInfo().packageName, PackageManager.GET_META_DATA);
+            Bundle bundle = ai.metaData;
+            return bundle.getBoolean(OBB_ENABLED, false);
+        }
+        catch (PackageManager.NameNotFoundException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }
