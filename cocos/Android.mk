@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := cocos2dx_static
 LOCAL_MODULE_FILENAME := libcocos2d
-
+LOCAL_CPP_EXTENSION := .mm .cpp .cc
 LOCAL_ARM_MODE := arm
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
@@ -79,6 +79,8 @@ scripting/js-bindings/jswrapper/v8/ObjectWrap.cpp \
 scripting/js-bindings/jswrapper/v8/ScriptEngine.cpp \
 scripting/js-bindings/jswrapper/v8/Utils.cpp \
 scripting/js-bindings/event/EventDispatcher.cpp \
+scripting/js-bindings/bugly/BuglyJSAgent.cpp \
+scripting/js-bindings/bugly/CrashReport.mm \
 ../external/sources/xxtea/xxtea.cpp \
 ../external/sources/tinyxml2/tinyxml2.cpp \
 ../external/sources/unzip/ioapi_mem.cpp \
