@@ -192,6 +192,8 @@ public:
      * @param callback  The event callback function
      */
     void setEventCallback(const EventCallback& callback) {_eventCallback = callback;};
+
+    void setManifestFileUrl(const std::string & url);
     
 CC_CONSTRUCTOR_ACCESS:
     
@@ -225,6 +227,7 @@ protected:
     void parseManifest();
     void startUpdate();
     void updateSucceed();
+    void diffManifest();
     bool decompress(const std::string &filename);
     void decompressDownloadedZip(const std::string &customId, const std::string &storagePath);
     
@@ -323,6 +326,8 @@ private:
     //! The path of local manifest file
     std::string _manifestUrl;
     
+    //! 远程资源base Url 
+    std::string _remoteBaseUrl;
     //! Local manifest
     Manifest *_localManifest;
     

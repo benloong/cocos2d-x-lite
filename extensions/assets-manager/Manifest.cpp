@@ -324,7 +324,7 @@ std::unordered_map<std::string, Manifest::AssetDiff> Manifest::genDiff(const Man
     return diff_map;
 }
 
-void Manifest::genResumeAssetsList(DownloadUnits *units) const
+void Manifest::genResumeAssetsList(DownloadUnits *units, const std::string &packageUrl) const
 {
     for (auto it = _assets.begin(); it != _assets.end(); ++it)
     {
@@ -334,7 +334,7 @@ void Manifest::genResumeAssetsList(DownloadUnits *units) const
         {
             DownloadUnit unit;
             unit.customId = it->first;
-            unit.srcUrl = _packageUrl + asset.path;
+            unit.srcUrl = packageUrl + asset.path;
             unit.storagePath = _manifestRoot + asset.path;
             unit.size = asset.size;
             units->emplace(unit.customId, unit);
@@ -394,6 +394,11 @@ const std::string& Manifest::getPackageUrl() const
 const std::string& Manifest::getManifestFileUrl() const
 {
     return _remoteManifestUrl;
+}
+
+void Manifest::setManifestFileUrl(const std::string &url)
+{
+     _remoteManifestUrl = url;
 }
 
 const std::string& Manifest::getVersionFileUrl() const

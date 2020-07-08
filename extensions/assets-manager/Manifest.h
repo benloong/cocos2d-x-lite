@@ -103,6 +103,8 @@ public:
      */
     const std::string& getManifestFileUrl() const;
     
+    void setManifestFileUrl(const std::string &url);
+    
     /** @brief Gets remote version file url.
      */
     const std::string& getVersionFileUrl() const;
@@ -196,7 +198,7 @@ protected:
     /** @brief Generate resuming download assets list
      * @param units   The download units reference to be modified by the generation result
      */
-    void genResumeAssetsList(DownloadUnits *units) const;
+    void genResumeAssetsList(DownloadUnits *units, const std::string &packageUrl) const;
     
     /** @brief Prepend all search paths to the FileUtils.
      */

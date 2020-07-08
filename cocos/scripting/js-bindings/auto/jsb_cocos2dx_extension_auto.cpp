@@ -867,6 +867,25 @@ static bool js_extension_AssetsManagerEx_setEventCallback(se::State& s)
 }
 SE_BIND_FUNC(js_extension_AssetsManagerEx_setEventCallback)
 
+static bool js_extension_AssetsManagerEx_setManifestFileUrl(se::State& s)
+{
+    cocos2d::extension::AssetsManagerEx* cobj = (cocos2d::extension::AssetsManagerEx*)s.nativeThisObject();
+    SE_PRECONDITION2(cobj, false, "js_extension_AssetsManagerEx_setManifestFileUrl : Invalid Native Object");
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 1) {
+        std::string arg0;
+        do { std::string tmp; ok &= seval_to_std_string(args[0], &tmp); arg0 = tmp; } while(false);
+        SE_PRECONDITION2(ok, false, "js_extension_AssetsManagerEx_setManifestFileUrl : Error processing arguments");
+        cobj->setManifestFileUrl(arg0);
+        return true;
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+    return false;
+}
+SE_BIND_FUNC(js_extension_AssetsManagerEx_setManifestFileUrl)
+
 static bool js_extension_AssetsManagerEx_setVersionCompareHandle(se::State& s)
 {
     cocos2d::extension::AssetsManagerEx* cobj = (cocos2d::extension::AssetsManagerEx*)s.nativeThisObject();
@@ -1205,6 +1224,7 @@ bool js_register_extension_AssetsManagerEx(se::Object* obj)
     cls->defineFunction("getStoragePath", _SE(js_extension_AssetsManagerEx_getStoragePath));
     cls->defineFunction("update", _SE(js_extension_AssetsManagerEx_update));
     cls->defineFunction("setEventCallback", _SE(js_extension_AssetsManagerEx_setEventCallback));
+    cls->defineFunction("setManifestFileUrl", _SE(js_extension_AssetsManagerEx_setManifestFileUrl));
     cls->defineFunction("setVersionCompareHandle", _SE(js_extension_AssetsManagerEx_setVersionCompareHandle));
     cls->defineFunction("setMaxConcurrentTask", _SE(js_extension_AssetsManagerEx_setMaxConcurrentTask));
     cls->defineFunction("getDownloadedBytes", _SE(js_extension_AssetsManagerEx_getDownloadedBytes));
