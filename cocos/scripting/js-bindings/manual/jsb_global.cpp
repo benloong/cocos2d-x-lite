@@ -855,8 +855,9 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
                 {
                     se::HandleObject retObj(se::Object::createPlainObject());
                     Data data;
-                    data.copy(imgInfo->data, imgInfo->length);    
+                    data.fastSet(imgInfo->data, imgInfo->length);
                     Data_to_seval(data, &dataVal);
+                    data.takeBuffer();
                     retObj->setProperty("data", dataVal);
                     retObj->setProperty("width", se::Value(imgInfo->width));
                     retObj->setProperty("height", se::Value(imgInfo->height));
@@ -1183,7 +1184,7 @@ SE_BIND_FUNC(JSB_hideInputBox)
 
 bool jsb_register_global_variables(se::Object* global)
 {
-    __threadPool = ThreadPool::newFixedThreadPool(3);
+    __threadPool = ThreadPool::newFixedThreadPool(1);
 
     global->defineFunction("require", _SE(require));
     global->defineFunction("requireModule", _SE(moduleRequire));
