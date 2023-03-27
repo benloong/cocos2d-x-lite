@@ -30,10 +30,10 @@ THE SOFTWARE.
 #include <functional>
 #include <mutex>
 #include <set>
+#include <unordered_map>
 
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include "base/uthash.h"
 
 NS_CC_BEGIN
 
@@ -54,17 +54,20 @@ public:
 
     void setupTimerWithInterval(float seconds, unsigned int repeat, float delay);
 
-    virtual void trigger(float dt) = 0;
-    virtual void cancel() = 0;
+    // Initializes a timer with a target, a lambda and an interval in seconds, repeat in number of times to repeat, delay in seconds.
+    bool initWithCallback(Scheduler* scheduler, const ccSchedulerFunc& callback, void* target, const std::string& key, float seconds, unsigned int repeat, float delay);
+
+    void trigger(float dt);
+    void cancel();
 
     /** triggers the timer */
     void update(float dt);
     
-protected:
+    inline const ccSchedulerFunc& getCallback() const { return _callback; };
+    inline const std::string& getKey() const { return _key; };
+
     Timer();
-
 protected:
-
     Scheduler* _scheduler = nullptr;
     float _elapsed = 0.f;
     bool _runForever = false;
@@ -73,23 +76,7 @@ protected:
     unsigned int _repeat = 0; //0 = once, 1 is 2 x executed
     float _delay = 0.f;
     float _interval = 0.f;
-};
 
-class CC_DLL TimerTargetCallback final : public Timer
-{
-public:
-    TimerTargetCallback();
-
-    // Initializes a timer with a target, a lambda and an interval in seconds, repeat in number of times to repeat, delay in seconds.
-    bool initWithCallback(Scheduler* scheduler, const ccSchedulerFunc& callback, void *target, const std::string& key, float seconds, unsigned int repeat, float delay);
-
-    inline const ccSchedulerFunc& getCallback() const { return _callback; };
-    inline const std::string& getKey() const { return _key; };
-
-    virtual void trigger(float dt) override;
-    virtual void cancel() override;
-
-protected:
     void* _target = nullptr;
     ccSchedulerFunc _callback = nullptr;
     std::string _key;
@@ -248,27 +235,6 @@ public:
      */
     bool isTargetPaused(void *target);
 
-    /** Pause all selectors from all targets.
-      You should NEVER call this method, unless you know what you are doing.
-     @since v2.0.0
-      */
-    std::set<void*> pauseAllTargets();
-
-    /** Pause all selectors from all targets with a minimum priority.
-      You should only call this with PRIORITY_NON_SYSTEM_MIN or higher.
-      @param minPriority The minimum priority of selector to be paused. Which means, all selectors which
-            priority is higher than minPriority will be paused.
-      @since v2.0.0
-      */
-    std::set<void*> pauseAllTargetsWithMinPriority(int minPriority);
-
-    /** Resume selectors on a set of targets.
-     This can be useful for undoing a call to pauseAllSelectors.
-     @param targetsToResume The set of targets to be resumed.
-     @since v2.0.0
-      */
-    void resumeTargets(const std::set<void*>& targetsToResume);
-
     /** Calls a function on the cocos2d thread. Useful when you need to call a cocos2d function from another thread.
      This function is thread safe.
      @param function The function to be run in cocos2d thread.
@@ -289,14 +255,23 @@ public:
     bool isCurrentTargetSalvaged () const { return _currentTargetSalvaged; };
 
 private:
-    void removeHashElement(struct _hashSelectorEntry *element);
-    void removeUpdateFromHash(struct _listEntry *entry);
+    // Hash Element used for "selectors with interval"
+    struct HashTimerEntry {
+        std::vector<Timer*> timers;
+        void *               target;
+        int                  timerIndex;
+        Timer* currentTimer;
+        bool                 currentTimerSalvaged;
+        bool                 paused;
+    };
+
+    void removeHashElement(struct HashTimerEntry *element);
 
     // update specific
 
     // Used for "selectors with interval"
-    struct _hashSelectorEntry *_hashForTimers = nullptr;
-    struct _hashSelectorEntry *_currentTarget = nullptr;
+    std::unordered_map<void *, HashTimerEntry *> _hashForTimers;
+    struct HashTimerEntry *                      _currentTarget = nullptr;
     bool _currentTargetSalvaged = false;
     // If true unschedule will not remove anything from a hash. Elements will only be marked for deletion.
     bool _updateHashLocked = false;

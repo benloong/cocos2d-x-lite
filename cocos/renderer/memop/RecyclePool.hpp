@@ -26,8 +26,8 @@
 #define RecyclePool_hpp
 
 #include <stdio.h>
+#include <vector>
 #include "../Macro.h"
-#include "../base/CCVector.h"
 
 RENDERER_BEGIN
 template<typename T>

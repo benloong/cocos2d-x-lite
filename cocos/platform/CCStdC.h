@@ -45,12 +45,8 @@ THE SOFTWARE.
 	#include <stdlib.h>
 	#include <time.h>
 
-	#if _MSC_VER >= 1600
-	    #include <stdint.h>
-	#else
-	    #include "platform/win32/compat/stdint.h"
-	#endif
-
+	#include <stdint.h>
+	
 	// Conflicted with ParticleSystem::PositionType::RELATIVE, so we need to undef it.
 	#ifdef RELATIVE
 	#undef RELATIVE

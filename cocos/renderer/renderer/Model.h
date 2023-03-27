@@ -28,7 +28,6 @@
 #include <list>
 #include "base/CCVector.h"
 #include "base/CCValue.h"
-#include "base/ccCArray.h"
 #include "math/Mat4.h"
 #include "../Macro.h"
 #include "InputAssembler.h"
@@ -52,18 +51,6 @@ struct DrawItem
     Model* model = nullptr;
     InputAssembler* ia = nullptr;
     EffectVariant* effect = nullptr;
-};
-
-class Model;
-
-class ModelPool
-{
-public:
-    static Model* getOrCreateModel();
-    static void returnModel(Model*);
-    
-private:
-    static ccCArray* _pool;;
 };
 
 /**

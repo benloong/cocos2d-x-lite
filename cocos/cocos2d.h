@@ -57,7 +57,6 @@ THE SOFTWARE.
 
 // math
 #include "math/CCGeometry.h"
-#include "math/CCVertex.h"
 #include "math/Mat4.h"
 #include "math/MathUtil.h"
 #include "math/Quaternion.h"

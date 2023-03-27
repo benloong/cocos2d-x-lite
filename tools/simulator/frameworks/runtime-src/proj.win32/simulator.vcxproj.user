@@ -12,6 +12,7 @@
     <LocalDebuggerCommandArguments>-search-path "$(ProjectDir)..\..\..\..\..\simulator\win32"</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
+    <LocalDebuggerCommand>$(OutDir)$(TargetName)$(TargetExt)</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>-search-path "$(ProjectDir)..\..\..\..\..\simulator\win32"</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

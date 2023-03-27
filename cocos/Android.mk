@@ -20,7 +20,6 @@ platform/CCImage.cpp \
 platform/CCSAXParser.cpp \
 $(MATHNEONFILE) \
 math/CCGeometry.cpp \
-math/CCVertex.cpp \
 math/Mat4.cpp \
 math/Quaternion.cpp \
 math/Vec2.cpp \
@@ -36,7 +35,6 @@ base/CCThreadPool.cpp \
 base/TGAlib.cpp \
 base/ZipUtils.cpp \
 base/base64.cpp \
-base/ccCArray.cpp \
 base/ccRandom.cpp \
 base/ccTypes.cpp \
 base/ccUTF8.cpp \
