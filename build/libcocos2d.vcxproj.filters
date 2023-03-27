@@ -856,6 +856,7 @@
     </ClCompile>
     <ClCompile Include="..\cocos\base\etc2.cpp">
       <Filter>base</Filter>
+    </ClCompile>
     <ClCompile Include="..\cocos\network\WebSocketServer.cpp">
       <Filter>network</Filter>
     </ClCompile>
@@ -875,7 +876,7 @@
       <Filter>cocos\2d</Filter>
     </ClCompile>
     <ClCompile Include="..\cocos\2d\CCTTFLabelAtlasCache.cpp">
-      <ClCompile>cocos\2d</Filter>
+      <Filter>cocos\2d</Filter>
     </ClCompile>
     <ClCompile Include="..\cocos\2d\CCTTFLabelRenderer.cpp">
       <Filter>cocos\2d</Filter>
@@ -885,6 +886,9 @@
     </ClCompile>
     <ClCompile Include="..\external\sources\edtaa3func\edtaa3func.cpp">
       <Filter>external\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\cocos\base\astc.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1947,6 +1951,7 @@
     </ClInclude>
     <ClInclude Include="..\cocos\base\etc2.h">
       <Filter>base</Filter>
+    </ClInclude>
     <ClInclude Include="..\cocos\network\WebSocketServer.h">
       <Filter>network</Filter>
     </ClInclude>
@@ -1977,6 +1982,9 @@
     <ClInclude Include="..\external\sources\edtaa3func\edtaa3func.h">
       <Filter>external\sources</Filter>
     </ClInclude>
+    <ClInclude Include="..\cocos\base\astc.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\cocos\math\Mat4.inl" />
@@ -2001,6 +2009,144 @@
     </Filter>
     <Filter Include="external\sources">
       <UniqueIdentifier>{388ec926-9454-467f-aadd-6dcb37d9e1e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{7721537c-f34d-4675-8980-f41b46f2677c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{84cb4065-dae9-45a6-9d7b-fa474bc52bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{f9670381-9312-4f7e-bf92-d27571e062ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer">
+      <UniqueIdentifier>{296ede21-63d8-4208-a0cf-08863c671fa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\gfx">
+      <UniqueIdentifier>{c705599f-9653-4f7f-8937-9bced9142cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings">
+      <UniqueIdentifier>{36d71eb6-6201-415f-95d7-050623e3b349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings\manual">
+      <UniqueIdentifier>{184bfe94-504f-4bf1-b336-8151e208c8c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings\auto">
+      <UniqueIdentifier>{84f6c563-4faf-4564-a9ec-ca450d02bcb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\scene">
+      <UniqueIdentifier>{127c5ca3-b385-4acd-93f6-e87646c8f12c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\scene\assembler">
+      <UniqueIdentifier>{be455591-0ab8-4701-b06b-d26524b47bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\renderer">
+      <UniqueIdentifier>{f993c1e6-b00f-4e65-a3aa-8cb2fee48a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support">
+      <UniqueIdentifier>{9cc181aa-d6f8-43c9-819e-7493cda1f034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\spine-creator-support">
+      <UniqueIdentifier>{277078c9-54cc-483d-9d01-5192f6734434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones-creator-support">
+      <UniqueIdentifier>{f14b1bf4-562d-44ab-a360-52c8ffc174ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\spine">
+      <UniqueIdentifier>{48723f8d-c3da-42cd-8ecb-cda1d43bb2c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings\jswrapper">
+      <UniqueIdentifier>{651fea4c-d7d6-43b6-8f73-255318c4b74c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings\jswrapper\v8">
+      <UniqueIdentifier>{a567733d-728e-4cc9-8fa7-3317ee147e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{1cc8e129-3cf1-48df-a42e-2cb368cffe1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\unzip">
+      <UniqueIdentifier>{367a72cf-437a-45a0-aa40-d3f72bd443ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\tinyxml2">
+      <UniqueIdentifier>{677d99a8-63fe-42d3-849d-fdf668bd366d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\xxtea">
+      <UniqueIdentifier>{4997bc64-8bfd-4584-bc06-0adf096e8a8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\win32">
+      <UniqueIdentifier>{a844073b-bd7f-4d1a-8466-996559d785e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings\jswrapper\v8\debugger">
+      <UniqueIdentifier>{262a1906-bdfe-498a-a290-65ceee95c237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones">
+      <UniqueIdentifier>{acd1b930-6a6a-4cef-b959-e70b034b095e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\animation">
+      <UniqueIdentifier>{cd447c8d-74ed-4496-9129-f2b3888e9232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\armature">
+      <UniqueIdentifier>{b53fce48-5cb5-440c-b53a-6ee919cca4e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\core">
+      <UniqueIdentifier>{7da77b3f-82a9-4afa-a796-dacd1f52c53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\event">
+      <UniqueIdentifier>{793d4029-c7ca-46ae-bf86-990c72e38016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\factory">
+      <UniqueIdentifier>{ed62c35b-9b86-4130-9797-eb79fa494067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\geom">
+      <UniqueIdentifier>{3bd2eb78-b872-4c36-9309-e5285417d195}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\model">
+      <UniqueIdentifier>{38c6054c-cfe7-4234-abe0-433a55eee023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\dragonbones\parser">
+      <UniqueIdentifier>{963e054d-6e29-4eed-9e5f-bb573c6e7c6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio">
+      <UniqueIdentifier>{d054157a-68b9-4e07-b33c-99d6c0f9c2a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\win32">
+      <UniqueIdentifier>{d334457c-eb0b-48b2-a4a1-a4d9b8b91d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\ConvertUTF">
+      <UniqueIdentifier>{aa850492-392b-4cf3-b3b8-55c841f34ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extensions">
+      <UniqueIdentifier>{212aa19e-3de6-4353-8e65-da7297f34442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extensions\assets-manager">
+      <UniqueIdentifier>{046bbab2-3d24-4e9c-bba4-5f4b4bca5ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="storage">
+      <UniqueIdentifier>{e3a5dfa4-6408-4f9e-9929-8911e5fd1193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="storage\local-storage">
+      <UniqueIdentifier>{ff872ff8-f986-43a7-8684-4b0f59d6e7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio\include">
+      <UniqueIdentifier>{234b7688-0718-4230-8dd9-98a90003c2f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\scene\memop">
+      <UniqueIdentifier>{e20b1b1b-27dc-476d-94f0-e5f14888872e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor-support\particle">
+      <UniqueIdentifier>{016402d3-27c9-4a1e-a857-a9ca763471cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="js-bindings\event">
+      <UniqueIdentifier>{28dbcf4a-e059-4a5d-a04d-bb5e1ac0416b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{f7db6b4d-92bc-4c01-b988-4bf5b2e90f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\edit-box">
+      <UniqueIdentifier>{99537469-6e7e-4f90-aa8a-cfab8de504e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\compat">
+      <UniqueIdentifier>{e9650dc5-7dee-4ccd-966f-02e28cf3cf5b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
