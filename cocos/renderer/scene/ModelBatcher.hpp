@@ -131,6 +131,8 @@ public:
     void setUseModel(bool useModel) { _useModel = useModel; }
     void changeCommitState(CommitState state);
 private:
+    void _flushCommit(NodeProxy* node, Assembler* handle, int cullingMask);
+    void _flushCommits();
     int _modelOffset = 0;
     int _cullingMask = 0;
     bool _useModel = false;
@@ -149,6 +151,18 @@ private:
     InputAssembler _ia;
     std::vector<Model*> _modelPool;
     std::unordered_map<VertexFormat*, MeshBuffer*> _buffers;
+
+    struct CommitInfo
+    {
+        NodeProxy* node;
+        Assembler* assembler;
+        int cullingMask;
+        cocos2d::Rect aabb;
+        double effectHash;
+    };
+
+    std::vector<CommitInfo> _commits;
+    bool _flushFlag = false;
 };
 
 // end of scene group

@@ -111,6 +111,8 @@ void AssemblerSprite::fillBuffers(NodeProxy* node, ModelBatcher* batcher, std::s
     {
         dstIndices[indexId++] = vertexOffset + srcIndices[j];
     }
+
+    _updateAabb(dstWorldVerts, vertexCount);
 }
 
 void AssemblerSprite::calculateWorldVertices(const Mat4& worldMat)

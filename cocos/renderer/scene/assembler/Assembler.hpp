@@ -181,6 +181,9 @@ public:
     {
         return _iaDatas.size();
     }
+
+    void _updateAabb(const float *vertices, uint32_t vertexCount);
+    Vec2 _min, _max;
 protected:
     RenderDataList* _datas = nullptr;
     std::vector<IARenderData> _iaDatas;

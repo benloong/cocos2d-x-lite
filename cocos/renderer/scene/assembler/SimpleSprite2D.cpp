@@ -100,6 +100,8 @@ void SimpleSprite2D::fillBuffers(NodeProxy* node, ModelBatcher* batcher, std::si
     {
         dstIndices[indexId++] = vertexId + srcIndices[j];
     }
+
+    _updateAabb(dstWorldVerts, 4);
 }
 
 RENDERER_END

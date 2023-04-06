@@ -119,6 +119,63 @@ void ModelBatcher::changeCommitState(CommitState state)
 void ModelBatcher::commit(NodeProxy* node, Assembler* assembler, int cullingMask)
 {
     changeCommitState(CommitState::Common);
+
+    cocos2d::Rect aabb;
+    auto min = assembler->_min;
+    auto max = assembler->_max;
+    aabb.setRect(min.x, min.y, max.x - min.x, max.y - min.y);
+    CommitInfo info = {
+         node,
+         assembler,
+         cullingMask,
+         aabb,
+    };
+
+    auto effect = assembler->getEffect(0);
+    if (effect)
+    {
+        info.effectHash = effect->getHash();
+    }
+
+    auto index = _commits.size();
+    for (; index > 0; index--)
+    {
+        auto hash = _commits[index - 1].effectHash;
+        auto aabb = _commits[index - 1].aabb;
+        auto mask = _commits[index - 1].cullingMask;
+        if (aabb.intersectsRect(info.aabb))
+        {
+            break;
+        }
+        if (info.effectHash == hash && mask == cullingMask)
+        {
+            break;
+        }
+    }
+    _commits.insert(_commits.begin() + index, info);
+}
+
+void ModelBatcher::_flushCommits()
+{
+    if (_flushFlag)
+    {
+        return;
+    }
+
+    _flushFlag = true;
+
+    for (const auto& commit : _commits)
+    {
+        _flushCommit(commit.node, commit.assembler, commit.cullingMask);
+    }
+    _commits.clear();
+
+    _flushFlag = false;
+}
+
+void ModelBatcher::_flushCommit(NodeProxy* node, Assembler* assembler, int cullingMask)
+{
+    changeCommitState(CommitState::Common);
     
     bool useModel = assembler->getUseModel();
     bool ignoreWorldMatrix = assembler->isIgnoreWorldMatrix();
@@ -263,6 +320,7 @@ void ModelBatcher::flushIA()
 
 void ModelBatcher::flush()
 {
+    _flushCommits();
     if (_commitState != CommitState::Common)
     {
         return;

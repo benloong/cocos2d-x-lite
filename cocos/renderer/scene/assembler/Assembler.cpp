@@ -205,6 +205,32 @@ void Assembler::fillBuffers(NodeProxy* node, ModelBatcher* batcher, std::size_t 
     {
         dst[indexId++] = vertexOffset + indices[j];
     }
+
+    _updateAabb(worldVerts, vertexCount);
+}
+
+void Assembler::_updateAabb(const float *vertices, uint32_t vertexCount) 
+{
+    size_t dataPerVertex = _bytesPerVertex / sizeof(float);
+
+    float minX = std::numeric_limits<float>::max();
+    float maxX = std::numeric_limits<float>::lowest();
+    float minY = std::numeric_limits<float>::max();
+    float maxY = std::numeric_limits<float>::lowest();
+
+    for (auto i = 0; i < vertexCount; ++i)
+    {
+        float x = vertices[0];
+        float y = vertices[1];
+        vertices += dataPerVertex;
+        minX = std::min(x, minX);
+        minY = std::min(y, minY);
+        maxX = std::max(x, maxX);
+        maxY = std::max(y, maxY);
+    }
+
+    _min.set(minX, minY);
+    _max.set(maxX, maxY);
 }
 
 void Assembler::setVertexFormat(VertexFormat* vfmt)
