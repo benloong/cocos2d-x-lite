@@ -410,7 +410,7 @@ SkeletonData *SkeletonJson::readSkeletonData(const char *json) {
 
             Skin *skin = nullptr;
             auto skinName = Json::getString(skinMap, "name", "");
-            if (strlen(skinName) == 0) {
+            if (!skinName || strlen(skinName) == 0) {
                 skinName = skinMap->_name;
             }
             skin = new(__FILE__, __LINE__) Skin(skinName);
