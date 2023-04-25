@@ -52,7 +52,7 @@ namespace se {
 
     private:
         static void emplace(void* nativeObj, Object* seObj);
-        static Map* __nativePtrToObjectMap;
+        static Map __nativePtrToObjectMap;
 
         friend class Object;
     };
@@ -79,7 +79,7 @@ namespace se {
         static Map::iterator end();
 
     private:
-        static Map* __nonRefNativeObjectCreatedByCtorMap;
+        static Map __nonRefNativeObjectCreatedByCtorMap;
     };
 
 } // namespace se {
