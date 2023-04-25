@@ -29,7 +29,6 @@
 #if SCRIPT_ENGINE_TYPE == SCRIPT_ENGINE_V8
 
 #include "Base.h"
-#include "../RefCounter.hpp"
 #include "../Value.hpp"
 #include "ObjectWrap.h"
 
@@ -46,7 +45,7 @@ namespace se {
     /**
      * se::Object represents JavaScript Object.
      */
-    class Object final : public RefCounter
+    class Object final
     {
     public:
         /**
@@ -377,7 +376,24 @@ namespace se {
         void _setFinalizeCallback(V8FinalizeFunc finalizeCb);
         bool _isNativeFunction() const;
         //
+        inline unsigned int getRefCount()
+        {
+            return _refCount;
+        }
+        
+        inline void incRef() 
+        {
+            ++_refCount;
+        }
 
+        inline void decRef()
+        {
+            --_refCount;
+            if (_refCount == 0)
+            {
+                delete this;
+            }
+        }
     private:
         static void nativeObjectFinalizeHook(void* nativeObj);
         static void setIsolate(v8::Isolate* isolate);
@@ -385,7 +401,7 @@ namespace se {
         static void setup();
 
         Object();
-        virtual ~Object();
+        ~Object();
 
         bool init(Class* cls, v8::Local<v8::Object> obj);
 
@@ -398,6 +414,7 @@ namespace se {
         internal::PrivateData* _internalData;
 
         friend class ScriptEngine;
+        unsigned int _refCount = 1;
     };
 
     extern std::unique_ptr<std::unordered_map<Object*, void*>> __objectMap; // Currently, the value `void*` is always nullptr

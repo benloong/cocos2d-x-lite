@@ -58,7 +58,7 @@ struct Skew {
 class UnitNode: public UnitBase {
 public:
     UnitNode();
-    virtual ~UnitNode();
+    ~UnitNode();
     void setDirty(se::Object* jsData);
     void setTRS(se::Object* jsData);
     void setLocalMat(se::Object* jsData);
@@ -175,7 +175,7 @@ protected:
 class NodeMemPool: public MemPool {
 public:
     NodeMemPool();
-    virtual ~NodeMemPool();
+    ~NodeMemPool();
     
     static NodeMemPool* getInstance()
     {
