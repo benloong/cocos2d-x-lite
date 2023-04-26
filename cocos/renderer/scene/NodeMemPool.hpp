@@ -175,7 +175,7 @@ protected:
 class NodeMemPool: public MemPool {
 public:
     NodeMemPool();
-    virtual ~NodeMemPool();
+    ~NodeMemPool();
     
     static NodeMemPool* getInstance()
     {

@@ -33,9 +33,6 @@ RENDERER_BEGIN
 class UnitBase
 {
 public:
-    UnitBase();
-    virtual ~UnitBase();
-    
     void set(se::Object** dataObj, uint8_t** data, std::size_t* dataLen, se::Object* jsData);
     void unset(se::Object** dataObj, uint8_t** data, std::size_t* dataLen);
     
@@ -52,7 +49,7 @@ class UnitCommon: public UnitBase
 {
 public:
     UnitCommon();
-    virtual ~UnitCommon();
+    ~UnitCommon();
     
     void setData(se::Object* jsData);
     void setSignData(se::Object* jsSignData);
@@ -84,7 +81,7 @@ protected:
 class MemPool {
 public:
     MemPool();
-    virtual ~MemPool();
+    ~MemPool();
     
     void removeCommonData(std::size_t unitID);
     void updateCommonData(std::size_t unitID, se_object_ptr dataObj, se_object_ptr signDataObj);

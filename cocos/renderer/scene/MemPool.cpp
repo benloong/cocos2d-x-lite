@@ -28,15 +28,6 @@
 
 RENDERER_BEGIN
 
-UnitBase::UnitBase()
-{
-    
-}
-
-UnitBase::~UnitBase()
-{
-    
-}
 
 void UnitBase::set(se::Object** dataObj, uint8_t** data, std::size_t* dataLen, se::Object* jsData)
 {
