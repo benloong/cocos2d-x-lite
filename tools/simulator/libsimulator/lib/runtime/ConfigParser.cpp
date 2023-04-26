@@ -156,7 +156,8 @@ _debugPort(kProjectConfigDebugger),
 _viewName("simulator"),
 _entryfile(""),
 _initViewSize(ProjectConfig::DEFAULT_HEIGHT, ProjectConfig::DEFAULT_WIDTH),
-_bindAddress("")
+_bindAddress(""),
+_isWaitForConnect(false)
 {
 }
 
