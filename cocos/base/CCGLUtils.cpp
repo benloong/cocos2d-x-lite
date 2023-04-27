@@ -117,14 +117,6 @@ BoundTextureInfo* getBoundTextureInfo(uint32_t textureUnit)
 
 void ccBindFramebuffer(GLenum target,GLuint buffer)
 {
-    if(Application::getInstance()->isDownsampleEnabled())
-    {
-        if(target == GL_FRAMEBUFFER && buffer == Application::getInstance()->getMainFBO())
-        {
-            buffer = __currentOffScreenFbo;
-        }
-    }
-
     glBindFramebuffer(target , buffer);
 }
 

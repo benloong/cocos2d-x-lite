@@ -347,9 +347,6 @@
     <ClCompile Include="..\cocos\scripting\js-bindings\manual\jsb_xmlhttprequest.cpp">
       <Filter>js-bindings\manual</Filter>
     </ClCompile>
-    <ClCompile Include="..\cocos\base\CCRenderTexture.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="..\cocos\base\CCGLUtils.cpp">
       <Filter>base</Filter>
     </ClCompile>
@@ -1336,9 +1333,6 @@
     </ClInclude>
     <ClInclude Include="..\cocos\scripting\js-bindings\event\CustomEventTypes.h">
       <Filter>js-bindings\event</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cocos\base\CCRenderTexture.h">
-      <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="..\cocos\base\CCGLUtils.h">
       <Filter>base</Filter>

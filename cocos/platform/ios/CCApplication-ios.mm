@@ -230,15 +230,8 @@ namespace
         
         prevTime = std::chrono::steady_clock::now();
         
-        bool downsampleEnabled = _application->isDownsampleEnabled();
-        if (downsampleEnabled)
-            _application->getRenderTexture()->prepare();
-        
         _scheduler->update(dt);
         cocos2d::EventDispatcher::dispatchTickEvent(dt);
-        
-        if (downsampleEnabled)
-            _application->getRenderTexture()->draw();
         
         [(CCEAGLView*)(_application->getView()) swapBuffers];
         cocos2d::PoolManager::getInstance()->getCurrentPool()->clear();
@@ -264,7 +257,6 @@ Application::Application(const std::string& name, int width, int height)
     Configuration::getInstance();
     
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_mainFBO);
-    _renderTexture = new RenderTexture(width, height);
     
     se::ScriptEngine::getInstance();
     EventDispatcher::init();
@@ -291,9 +283,6 @@ Application::~Application()
     
     [(CCEAGLView*)_view release];
     _view = nullptr;
-
-    delete _renderTexture;
-    _renderTexture = nullptr;
 
     Application::_instance = nullptr;
 }
@@ -413,11 +402,6 @@ Application::Platform Application::getPlatform() const
 float Application::getScreenScale() const
 {
     return [(UIView*)_view contentScaleFactor];
-}
-
-GLint Application::getMainFBO() const
-{
-    return _mainFBO;
 }
 
 bool Application::openURL(const std::string &url)

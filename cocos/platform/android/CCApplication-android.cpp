@@ -98,7 +98,6 @@ Application::Application(const std::string& name, int width, int height)
     PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOESEXT = (PFNGLBINDVERTEXARRAYOESPROC)eglGetProcAddress("glBindVertexArrayOES");
     PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOESEXT = (PFNGLDELETEVERTEXARRAYSOESPROC)eglGetProcAddress("glDeleteVertexArraysOES");
 
-    _renderTexture = new RenderTexture(width, height);
     updateViewSize(width, height);
 }
 
@@ -110,9 +109,6 @@ Application::~Application()
 
     EventDispatcher::destroy();
     se::ScriptEngine::destroyInstance();
-
-    delete _renderTexture;
-    _renderTexture = nullptr;
 
     Application::_instance = nullptr;
 }
@@ -272,11 +268,6 @@ Application::Platform Application::getPlatform() const
 float Application::getScreenScale() const
 {
     return 1.f;
-}
-
-GLint Application::getMainFBO() const
-{
-    return _mainFBO;
 }
 
 void Application::onCreateView(PixelFormat& /*pixelformat*/, DepthFormat& /*depthFormat*/, int& /*multisamplingCount*/)

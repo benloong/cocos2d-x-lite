@@ -107,9 +107,6 @@ Application::Application(const std::string& name, int width, int height)
     _scheduler = std::make_shared<Scheduler>();
 
     createView(name, width, height);
-    
-    _renderTexture = new RenderTexture(width, height);
-    
     EventDispatcher::init();
     se::ScriptEngine::getInstance();
 }
@@ -126,9 +123,6 @@ Application::~Application()
 
     delete CAST_VIEW(_view);
     _view = nullptr;
-
-    delete _renderTexture;
-    _renderTexture = nullptr;
 
     Application::_instance = nullptr;
 }
@@ -201,8 +195,6 @@ void Application::start()
         }
 
         // should be invoked at the begin of rendering a frame
-        if (_isDownsampleEnabled)
-            _renderTexture->prepare();
         CAST_VIEW(_view)->pollEvents();
         if(_isStarted)
         {
@@ -215,9 +207,6 @@ void Application::start()
                 _scheduler->update(dt);
 
                 EventDispatcher::dispatchTickEvent(dt);
-
-                if (_isDownsampleEnabled)
-                    _renderTexture->draw();
 
                 CAST_VIEW(_view)->swapBuffers();
                 PoolManager::getInstance()->getCurrentPool()->clear();
@@ -363,11 +352,6 @@ void Application::setDisplayStats(bool isShow) {
 float Application::getScreenScale() const
 {
     return CAST_VIEW(_view)->getScale();
-}
-
-GLint Application::getMainFBO() const
-{
-    return CAST_VIEW(_view)->getMainFBO();
 }
 
 Application::Platform Application::getPlatform() const

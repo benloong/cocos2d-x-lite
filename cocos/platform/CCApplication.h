@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "base/ccMacros.h"
 #include "platform/CCPlatformConfig.h"
 #include "platform/CCPlatformDefine.h"
-#include "base/CCRenderTexture.h"
+#include "math/Vec2.h"
 
 NS_CC_BEGIN
 
@@ -110,7 +110,6 @@ public:
     
     inline void* getView() const { return _view; }
     inline std::shared_ptr<Scheduler> getScheduler() const { return _scheduler; }
-    inline RenderTexture* getRenderTexture() const { return _renderTexture; }
     
     void runOnMainThread();
     
@@ -151,24 +150,10 @@ public:
      @brief set display stats information.
      */
     void setDisplayStats(bool isShow);
-
-    void setDevicePixelRatio(uint8_t ratio)
-    {
-        if (ratio <= 1)
-            return;
-        
-        _devicePixelRatio = ratio;
-        _isDownsampleEnabled = true;
-        _renderTexture->init(ratio);
-    }
-    inline uint8_t getDevicePixelRatio() const { return _devicePixelRatio; }
-    inline bool isDownsampleEnabled() const { return _isDownsampleEnabled; }
     
     /** The value is (framebuffer size) / (window size), but on iOS, it is special, its value is 1.
      */
     float getScreenScale() const;
-    
-    GLint getMainFBO() const;
     
     /**
      @brief Get target platform.
@@ -197,16 +182,10 @@ private:
     
     void* _view = nullptr;
     void* _delegate = nullptr;
-    RenderTexture* _renderTexture = nullptr;
     int _fps = 60;
-    GLint _mainFBO = 0;
 
-    // The ratio to downsample, for example, if its value is 2,
-    // then the rendering size of render texture is device_resolution/2.
-    uint8_t _devicePixelRatio = 1;
     bool _multiTouch = false;
     bool _isStarted = false;
-    bool _isDownsampleEnabled = false;
 
     cocos2d::Vec2 _viewSize;
 };

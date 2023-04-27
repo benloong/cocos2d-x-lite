@@ -35,7 +35,6 @@
     <ClCompile Include="..\cocos\base\CCLog.cpp" />
     <ClCompile Include="..\cocos\base\ccRandom.cpp" />
     <ClCompile Include="..\cocos\base\CCRef.cpp" />
-    <ClCompile Include="..\cocos\base\CCRenderTexture.cpp" />
     <ClCompile Include="..\cocos\base\CCScheduler.cpp" />
     <ClCompile Include="..\cocos\base\CCThreadPool.cpp" />
     <ClCompile Include="..\cocos\base\ccTypes.cpp" />
@@ -340,7 +339,6 @@
     <ClInclude Include="..\cocos\base\ccRandom.h" />
     <ClInclude Include="..\cocos\base\CCRef.h" />
     <ClInclude Include="..\cocos\base\CCRefPtr.h" />
-    <ClInclude Include="..\cocos\base\CCRenderTexture.h" />
     <ClInclude Include="..\cocos\base\CCScheduler.h" />
     <ClInclude Include="..\cocos\base\CCThreadPool.h" />
     <ClInclude Include="..\cocos\base\ccTypes.h" />

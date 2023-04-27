@@ -244,17 +244,10 @@ extern "C"
         static float dtSum = 0.f;
         static uint32_t jsbInvocationTotalCount = 0;
         static uint32_t jsbInvocationTotalFrames = 0;
-        bool downsampleEnabled = g_app->isDownsampleEnabled();
-        
-        if (downsampleEnabled)
-            g_app->getRenderTexture()->prepare();
 
         g_app->getScheduler()->update(dt);
         EventDispatcher::dispatchTickEvent(dt);
        
-        if (downsampleEnabled)
-            g_app->getRenderTexture()->draw();
-
         PoolManager::getInstance()->getCurrentPool()->clear();
 
         now = std::chrono::steady_clock::now();
