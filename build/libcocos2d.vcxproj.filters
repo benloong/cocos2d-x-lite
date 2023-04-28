@@ -7,9 +7,6 @@
     <ClCompile Include="..\cocos\base\CCAutoreleasePool.cpp">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="..\cocos\base\ccCArray.cpp">
-      <Filter>base</Filter>
-    </ClCompile>
     <ClCompile Include="..\cocos\base\CCConfiguration.cpp">
       <Filter>base</Filter>
     </ClCompile>
@@ -895,9 +892,6 @@
     <ClInclude Include="..\cocos\base\CCAutoreleasePool.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="..\cocos\base\ccCArray.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="..\cocos\base\ccConfig.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -944,12 +938,6 @@
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="..\cocos\base\TGAlib.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cocos\base\uthash.h">
-      <Filter>base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\cocos\base\utlist.h">
       <Filter>base</Filter>
     </ClInclude>
     <ClInclude Include="..\cocos\base\ZipUtils.h">

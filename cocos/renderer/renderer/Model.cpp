@@ -31,35 +31,6 @@
 
 RENDERER_BEGIN
 
-// Implementation of Model pool.
-
-ccCArray* ModelPool::_pool = ccCArrayNew(500);
-
-Model* ModelPool::getOrCreateModel()
-{
-    Model* model = nullptr;
-    if (0 != _pool->num)
-    {
-        model = static_cast<Model*>(ModelPool::_pool->arr[ModelPool::_pool->num - 1]);
-        ccCArrayRemoveValueAtIndex(ModelPool::_pool, ModelPool::_pool->num - 1);
-    }
-    else
-        model = new Model();
-
-    return model;
-}
-
-void ModelPool::returnModel(Model *model)
-{
-    if (ModelPool::_pool->num < ModelPool::_pool->max)
-    {
-        model->reset();
-        ccCArrayAppendValue(ModelPool::_pool, model);
-    }
-    else
-        delete model;
-}
-
 // Implementation of Model
 
 Model::Model()

@@ -28,7 +28,6 @@
     <ClCompile Include="..\cocos\base\astc.cpp" />
     <ClCompile Include="..\cocos\base\base64.cpp" />
     <ClCompile Include="..\cocos\base\CCAutoreleasePool.cpp" />
-    <ClCompile Include="..\cocos\base\ccCArray.cpp" />
     <ClCompile Include="..\cocos\base\CCConfiguration.cpp" />
     <ClCompile Include="..\cocos\base\CCData.cpp" />
     <ClCompile Include="..\cocos\base\CCGLUtils.cpp" />
@@ -328,7 +327,6 @@
     <ClInclude Include="..\cocos\base\astc.h" />
     <ClInclude Include="..\cocos\base\base64.h" />
     <ClInclude Include="..\cocos\base\CCAutoreleasePool.h" />
-    <ClInclude Include="..\cocos\base\ccCArray.h" />
     <ClInclude Include="..\cocos\base\ccConfig.h" />
     <ClInclude Include="..\cocos\base\CCConfiguration.h" />
     <ClInclude Include="..\cocos\base\CCData.h" />
@@ -351,8 +349,6 @@
     <ClInclude Include="..\cocos\base\etc2.h" />
     <ClInclude Include="..\cocos\base\pvr.h" />
     <ClInclude Include="..\cocos\base\TGAlib.h" />
-    <ClInclude Include="..\cocos\base\uthash.h" />
-    <ClInclude Include="..\cocos\base\utlist.h" />
     <ClInclude Include="..\cocos\base\ZipUtils.h" />
     <ClInclude Include="..\cocos\cocos2d.h" />
     <ClInclude Include="..\cocos\editor-support\dragonbones-creator-support\ArmatureCache.h" />

@@ -36,7 +36,6 @@ base/CCThreadPool.cpp \
 base/TGAlib.cpp \
 base/ZipUtils.cpp \
 base/base64.cpp \
-base/ccCArray.cpp \
 base/ccRandom.cpp \
 base/ccTypes.cpp \
 base/ccUTF8.cpp \
