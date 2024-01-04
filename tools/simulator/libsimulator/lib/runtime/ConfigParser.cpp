@@ -27,8 +27,8 @@
 #include "json/document.h"
 #include "json/stringbuffer.h"
 #include "json/writer.h"
-#include "ConfigParser.h"
 #include "FileServer.h"
+#include "ConfigParser.h"
 
 // ConfigParser
 ConfigParser *ConfigParser::s_sharedConfigParserInstance = NULL;

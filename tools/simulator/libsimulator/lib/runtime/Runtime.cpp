@@ -30,6 +30,11 @@ THE SOFTWARE.
 #include "ConfigParser.h"
 #include "RuntimeProtocol.h"
 
+//
+// RuntimeEngine
+//
+#include "ProjectConfig/ProjectConfig.h"
+
 #if ((CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC))
 #include "DeviceEx.h"
 #include "network/CCHTTPRequest.h"
@@ -37,6 +42,7 @@ THE SOFTWARE.
 #endif
 
 std::string g_projectPath;
+ProjectConfig _project;
 
 void recvBuf(int fd, char *pbuf, unsigned long bufsize)
 {

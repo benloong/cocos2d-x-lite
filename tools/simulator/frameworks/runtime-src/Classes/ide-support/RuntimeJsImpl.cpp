@@ -33,7 +33,6 @@
 
 #if (CC_CODE_IDE_DEBUG_SUPPORT > 0)
 
-#include "runtime/ConfigParser.h"   // config
 #include "runtime/Runtime.h"
 #include "runtime/FileServer.h"
 #include "runtime/ConfigParser.h"

@@ -48,14 +48,10 @@ const char* getRuntimeVersion();
 void resetDesignResolution();
 const char* getRuntimeVersion();
 
-//
-// RuntimeEngine
-//
-#include "ProjectConfig/ProjectConfig.h"
-
 #define kRuntimeEngineJs  2
 
 class RuntimeProtocol;
+class ProjectConfig;
 class CC_LIBSIM_DLL RuntimeEngine
 {
 public:
@@ -85,7 +81,6 @@ private:
     void trackLaunchEvent();
     
     RuntimeProtocol *_runtime;  // weak ref
-    ProjectConfig _project;
     bool _eventTrackingEnable;  // false default
     std::string _launchEvent;
     std::unordered_map<int,RuntimeProtocol*> _runtimes;

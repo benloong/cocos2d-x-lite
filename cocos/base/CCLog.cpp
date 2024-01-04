@@ -29,9 +29,10 @@
 #include <string.h>
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-#include <io.h>
-#include <WS2tcpip.h>
-#include <Winsock2.h>
+
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files:
+#include <windows.h>
 
 #endif // (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
