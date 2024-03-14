@@ -546,14 +546,13 @@ Image::Image()
 
 Image::~Image()
 {
-    CC_SAFE_FREE(_data);
 }
 
 bool Image::initWithImageFile(const std::string& path)
 {
     bool ret = false;
-    //NOTE: fullPathForFilename isn't threadsafe. we should make sure the parameter is a full path.
-//    _filePath = FileUtils::getInstance()->fullPathForFilename(path);
+    // NOTE: fullPathForFilename isn't threadsafe. we should make sure the parameter is a full path.
+    //    _filePath = FileUtils::getInstance()->fullPathForFilename(path);
     _filePath = path;
 
     Data data = FileUtils::getInstance()->getDataFromFile(_filePath);
@@ -566,7 +565,7 @@ bool Image::initWithImageFile(const std::string& path)
     return ret;
 }
 
-bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
+bool Image::initWithImageData(const unsigned char* data, ssize_t dataLen)
 {
     bool ret = false;
 
@@ -648,6 +647,7 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         }
     } while (0);
 
+    this->data.fastSet(this->_data, this->_dataLen);
     return ret;
 }
 

@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "base/CCRef.h"
 #include "platform/CCGL.h"
 #include "platform/CCStdC.h"
+#include "base/CCData.h"
 
 #include <string>
 #include <map>
@@ -250,6 +251,7 @@ public:
     inline const MipmapInfo* getMipmaps() const            { return _mipmaps; }
     inline bool              hasPremultipliedAlpha() const { return _hasPremultipliedAlpha; }
     inline std::string       getFilePath() const           { return _filePath; }
+    inline Data&             getCCData()                   { return data; }
 
     int                      getBitPerPixel() const;
     bool                     hasAlpha() const;
@@ -295,6 +297,7 @@ protected:
      @brief Determine whether we premultiply alpha for png files.
      */
     static bool PNG_PREMULTIPLIED_ALPHA_ENABLED;
+    Data data;
     unsigned char *_data;
     ssize_t _dataLen;
     int _width;
