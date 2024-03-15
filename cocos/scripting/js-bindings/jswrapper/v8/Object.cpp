@@ -226,7 +226,7 @@ namespace se {
         return obj;
     }
     
-    Object* Object::createTypedArray(TypedArrayType type, void* data, size_t byteLength, bool moveData)
+    Object* Object::createTypedArray(TypedArrayType type, void* data, size_t byteLength)
     {
         if (type == TypedArrayType::NONE)
         {
@@ -240,20 +240,11 @@ namespace se {
             return nullptr;
         }
 
-        v8::Local<v8::ArrayBuffer> jsobj;
+        v8::Local<v8::ArrayBuffer> jsobj = v8::ArrayBuffer::New(__isolate, byteLength);
         //If data has content,then will copy data into buffer,or will only clear buffer.
         if (data) {
-            if (moveData) {
-                std::unique_ptr<v8::BackingStore> backStore = v8::ArrayBuffer::NewBackingStore(
-                    data, byteLength, [](void* data, size_t length, void* deleter_data) { free(data); }, nullptr);
-                std::shared_ptr<v8::BackingStore> shared(std::move(backStore));
-                jsobj = v8::ArrayBuffer::New(__isolate, shared);
-            } else {
-                jsobj = v8::ArrayBuffer::New(__isolate, byteLength);
-                memcpy(jsobj->GetContents().Data(), data, byteLength);
-            }
-        } else {
-            jsobj = v8::ArrayBuffer::New(__isolate, byteLength);
+            memcpy(jsobj->GetContents().Data(), data, byteLength);
+        }else{
             memset(jsobj->GetContents().Data(), 0, byteLength);
         }
         

@@ -2840,7 +2840,7 @@ bool ManifestAsset_to_seval(const cocos2d::extension::ManifestAsset& v, se::Valu
 //    return true;
 //}
 
-bool Data_to_seval(const cocos2d::Data& v, se::Value* ret, bool moveData)
+bool Data_to_seval(const cocos2d::Data& v, se::Value* ret)
 {
     assert(ret != nullptr);
     if (v.isNull())
@@ -2849,15 +2849,7 @@ bool Data_to_seval(const cocos2d::Data& v, se::Value* ret, bool moveData)
     }
     else
     {
-        ssize_t size = 0;
-        unsigned char* data;
-        if (moveData) {
-            data = const_cast<cocos2d::Data*>(&v)->takeBuffer(&size);
-        } else {
-            data = v.getBytes();
-            size = v.getSize();
-        }
-        se::HandleObject obj(se::Object::createTypedArray(se::Object::TypedArrayType::UINT8, data, size, moveData));
+        se::HandleObject obj(se::Object::createTypedArray(se::Object::TypedArrayType::UINT8, v.getBytes(), v.getSize()));
         ret->setObject(obj, true);
     }
     return true;

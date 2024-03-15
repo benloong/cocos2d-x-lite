@@ -96,7 +96,7 @@ namespace se {
          *  @return A JavaScript Typed Array Object whose backing store is the same as the one pointed data, or nullptr if there is an error.
          *  @note The return value (non-null) has to be released manually.
          */
-        static Object* createTypedArray(TypedArrayType type, void* data, size_t byteLength, bool moveData = false);
+        static Object* createTypedArray(TypedArrayType type, void* data, size_t byteLength);
 
         /**
          *  @brief Creates a JavaScript Array Buffer object from an existing pointer.

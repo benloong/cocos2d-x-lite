@@ -720,11 +720,17 @@ SE_BIND_FUNC(js_performance_now)
 namespace
 {
     struct ImageInfo
-    { 
+    {
+        ~ImageInfo()
+        {
+            if (freeData)
+                delete [] data;
+        }
+
         uint32_t length = 0;
         uint32_t width = 0;
         uint32_t height = 0;
-        Data data;
+        uint8_t* data = nullptr;
         GLenum glFormat = GL_RGBA;
         GLenum glInternalFormat = GL_RGBA;
         GLenum type = GL_UNSIGNED_BYTE;
@@ -733,10 +739,12 @@ namespace
         bool hasAlpha = false;
         bool hasPremultipliedAlpha = false;
         bool compressed = false;
+
+        bool freeData = false;
     };
 
     uint8_t* convertRGB2RGBA (uint32_t length, uint8_t* src) {
-        uint8_t* dst = (uint8_t*)malloc(length);
+        uint8_t* dst = new uint8_t[length];
         for (uint32_t i = 0; i < length; i += 4) {
             dst[i] = *src++;
             dst[i + 1] = *src++;
@@ -747,7 +755,7 @@ namespace
     }
 
     uint8_t* convertIA2RGBA (uint32_t length, uint8_t* src) {
-        uint8_t* dst = (uint8_t*)malloc(length);
+        uint8_t* dst = new uint8_t[length];
         for (uint32_t i = 0; i < length; i += 4) {
             dst[i] = *src;
             dst[i + 1] = *src;
@@ -758,7 +766,7 @@ namespace
     }
 
     uint8_t* convertI2RGBA (uint32_t length, uint8_t* src) {
-        uint8_t* dst = (uint8_t*)malloc(length);
+        uint8_t* dst = new uint8_t[length];
         for (uint32_t i = 0; i < length; i += 4) {
             dst[i] = *src;
             dst[i + 1] = *src;
@@ -768,13 +776,13 @@ namespace
         return dst;
     }
 
-    struct ImageInfo* createImageInfo(Image* img)
+    struct ImageInfo* createImageInfo(const Image* img)
     {
         struct ImageInfo* imgInfo = new struct ImageInfo();
         imgInfo->length = (uint32_t)img->getDataLen();
         imgInfo->width = img->getWidth();
         imgInfo->height = img->getHeight();
-        imgInfo->data = std::move(img->getCCData());
+        imgInfo->data = img->getData();
 
         const auto& pixelFormatInfo = img->getPixelFormatInfo();
         imgInfo->glFormat = pixelFormatInfo.format;
@@ -796,7 +804,7 @@ namespace
             imgInfo->length = img->getWidth() * img->getHeight() * 4;
             uint8_t* dst = nullptr;
             uint32_t length = imgInfo->length;
-            uint8_t* src = imgInfo->data.getBytes();
+            uint8_t* src = imgInfo->data;
             switch(imgInfo->glFormat) {
                 case GL_LUMINANCE_ALPHA:
                     dst = convertIA2RGBA(length, src);
@@ -813,11 +821,12 @@ namespace
                     break;
             }
 
-            imgInfo->data.fastSet(dst, length);
+            imgInfo->data = dst;
             imgInfo->hasAlpha = true;
             imgInfo->bpp = 32;
             imgInfo->glFormat = GL_RGBA;
             imgInfo->glInternalFormat = GL_RGBA;
+            imgInfo->freeData = true;
         }
 
         return imgInfo;
@@ -834,6 +843,7 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
     std::shared_ptr<se::Value> callbackPtr = std::make_shared<se::Value>(callbackVal);
 
     auto initImageFunc = [path, callbackPtr](const std::string& fullPath, unsigned char* imageData, int imageBytes, const std::string& errorMsg){
+        std::shared_ptr<uint8_t> imageDataGuard(imageData, free);
 
         auto pool = g_threadPool;
         if (!pool)
@@ -854,7 +864,8 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
             }
             else if (fullPath.empty())
             {
-                loadSucceed = img->initWithImageData(imageData, imageBytes);
+                loadSucceed = img->initWithImageData(imageDataGuard.get(), imageBytes);
+                imageDataGuard = nullptr;
             }
             else
             {
@@ -879,7 +890,10 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
                     retObj->root();
                     refs.push_back(retObj);
                     
-                    Data_to_seval(imgInfo->data, &dataVal, true);
+                    Data data;
+                    data.fastSet(imgInfo->data, imgInfo->length); 
+                    Data_to_seval(data, &dataVal);
+                    data.takeBuffer();
                     retObj->setProperty("data", dataVal);
                     retObj->setProperty("width", se::Value(imgInfo->width));
                     retObj->setProperty("height", se::Value(imgInfo->height));
