@@ -197,6 +197,15 @@ public:
 
     void updateFont(const std::string& fontName, float fontSize, bool bold = false)
     {
+        static std::unique_ptr<CHAR[]> systemFaceName;
+        if (!systemFaceName) {
+            systemFaceName.reset(new CHAR[LF_FACESIZE]);
+            NONCLIENTMETRICSA metrics;
+            metrics.cbSize = sizeof(NONCLIENTMETRICSA);
+            SystemParametersInfoA(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICSA), &metrics, 0);
+            strcpy_s(systemFaceName.get(), LF_FACESIZE, metrics.lfMessageFont.lfFaceName);
+        }
+
         do
         {
             _fontName = fontName;
@@ -233,6 +242,7 @@ public:
                             _fontName = &_fontName[nFindPos + 1];
                         }
                     }
+                    _fontName = systemFaceName.get();
                 }
                 tFont.lfCharSet = DEFAULT_CHARSET;
                 strcpy_s(tFont.lfFaceName, LF_FACESIZE, _fontName.c_str());
