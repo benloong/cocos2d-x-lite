@@ -335,6 +335,34 @@ void Skeleton::setSkin(Skin *newSkin) {
 	updateCache();
 }
 
+void Skeleton::fixSkinAttactments(Skeleton* other) {
+	if (_slots.size() == other->getSlots().size()) {
+		return;
+	}
+	
+	Vector<Skin *> otherSkins = other->getData()->getSkins();
+	size_t otherSkinSize = otherSkins.size();
+	size_t thisSlotsSize = _slots.size();
+
+	for (size_t k = 0; k < otherSkinSize; k++)
+	{
+		Skin *skin = otherSkins[k];
+		Skin::AttachmentMap::Entries entries = skin->getAttachments();
+		while (entries.hasNext()) {
+			Skin::AttachmentMap::Entry& entry = entries.next();
+			String attachmentName = entry._name;
+			Attachment *attachment = entry._attachment;
+			if (attachment) {
+			for (size_t j = 0; j < thisSlotsSize; j++) {
+				if (_slots[j]->getData().getAttachmentName() == attachmentName) {
+						skin->setAttachment(_slots[j]->getData().getIndex(), attachmentName, attachment);
+					}
+				}
+			}
+		}
+	}
+}
+
 Attachment *Skeleton::getAttachment(const String &slotName, const String &attachmentName) {
 	return getAttachment(_data->findSlotIndex(slotName), attachmentName);
 }

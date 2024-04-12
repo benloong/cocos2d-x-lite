@@ -672,6 +672,7 @@ SE_DECLARE_FUNC(js_cocos2dx_spine_Skeleton_setSkin);
 SE_DECLARE_FUNC(js_cocos2dx_spine_Skeleton_findSlot);
 SE_DECLARE_FUNC(js_cocos2dx_spine_Skeleton_updateWorldTransform);
 SE_DECLARE_FUNC(js_cocos2dx_spine_Skeleton_findPathConstraint);
+SE_DECLARE_FUNC(js_cocos2dx_spine_Skeleton_fixSkinAttactments);
 
 extern se::Object* __jsb_spine_SkeletonBounds_proto;
 extern se::Class* __jsb_spine_SkeletonBounds_class;

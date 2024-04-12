@@ -9539,6 +9539,26 @@ static bool js_cocos2dx_spine_Skeleton_setSkin(se::State& s)
 }
 SE_BIND_FUNC(js_cocos2dx_spine_Skeleton_setSkin)
 
+static bool js_cocos2dx_spine_Skeleton_fixSkinAttactments(se::State& s)
+{
+	spine::Skeleton* cobj = (spine::Skeleton*)s.nativeThisObject();
+	SE_PRECONDITION2(cobj, false, "js_cocos2dx_spine_Skeleton_fixSkinAttactments : Invalid Native Object");
+	const auto& args = s.args();
+	size_t argc = args.size();
+	CC_UNUSED bool ok = true;
+	if (argc == 1) {
+		spine::Skeleton* arg0 = nullptr;
+		ok &= seval_to_native_ptr(args[0], &arg0);
+		SE_PRECONDITION2(ok, false, "js_cocos2dx_spine_Skeleton_fixSkinAttactments : Error processing arguments");
+		cobj->fixSkinAttactments(arg0);
+		return true;
+	}
+
+	SE_REPORT_ERROR("wrong number of arguments: %d", (int)argc);
+	return false;
+}
+SE_BIND_FUNC(js_cocos2dx_spine_Skeleton_fixSkinAttactments)
+
 static bool js_cocos2dx_spine_Skeleton_findSlot(se::State& s)
 {
     spine::Skeleton* cobj = (spine::Skeleton*)s.nativeThisObject();
@@ -9642,6 +9662,7 @@ bool js_register_cocos2dx_spine_Skeleton(se::Object* obj)
     cls->defineFunction("findSlot", _SE(js_cocos2dx_spine_Skeleton_findSlot));
     cls->defineFunction("updateWorldTransform", _SE(js_cocos2dx_spine_Skeleton_updateWorldTransform));
     cls->defineFunction("findPathConstraint", _SE(js_cocos2dx_spine_Skeleton_findPathConstraint));
+	cls->defineFunction("fixSkinAttactments",_SE(js_cocos2dx_spine_Skeleton_fixSkinAttactments));
     cls->install();
     JSBClassType::registerClass<spine::Skeleton>(cls);
 
@@ -10754,6 +10775,29 @@ bool js_register_cocos2dx_spine_SkeletonData(se::Object* obj)
 se::Object* __jsb_spine_Skin_proto = nullptr;
 se::Class* __jsb_spine_Skin_class = nullptr;
 
+static bool js_spine_Skin_finalize(se::State& s)
+{
+	CCLOGINFO("jsbindings: finalizing JS object %p (spine::VertexEffectDelegate)", s.nativeThisObject());
+	spine::Skin* cobj = (spine::Skin*)s.nativeThisObject();
+	delete cobj;
+	return true;
+}
+SE_BIND_FINALIZE_FUNC(js_spine_Skin_finalize)
+
+static bool js_cocos2dx_spine_Skin_constructor(se::State& s)
+{
+	CC_UNUSED bool ok = true;
+	const auto& args = s.args();
+	std::string arg0;
+	ok &= seval_to_std_string(args[0], &arg0);
+	SE_PRECONDITION2(ok, false, "js_cocos2dx_spine_Skin_constructor : Error processing arguments");
+	spine::Skin* cobj = new spine::Skin(arg0.c_str());
+	s.thisObject()->setPrivateData(cobj);
+	return true;
+}
+SE_BIND_CTOR(js_cocos2dx_spine_Skin_constructor, __jsb_spine_Skin_class, js_spine_Skin_finalize)
+
+
 static bool js_cocos2dx_spine_Skin_findNamesForSlot(se::State& s)
 {
     spine::Skin* cobj = (spine::Skin*)s.nativeThisObject();
@@ -10960,7 +11004,7 @@ SE_BIND_FUNC(js_cocos2dx_spine_Skin_findAttachmentsForSlot)
 
 bool js_register_cocos2dx_spine_Skin(se::Object* obj)
 {
-    auto cls = se::Class::create("Skin", obj, nullptr, nullptr);
+	auto cls = se::Class::create("Skin", obj, nullptr, _SE(js_cocos2dx_spine_Skin_constructor));
 
     cls->defineFunction("findNamesForSlot", _SE(js_cocos2dx_spine_Skin_findNamesForSlot));
     cls->defineFunction("getConstraints", _SE(js_cocos2dx_spine_Skin_getConstraints));
@@ -10972,6 +11016,7 @@ bool js_register_cocos2dx_spine_Skin(se::Object* obj)
     cls->defineFunction("setAttachment", _SE(js_cocos2dx_spine_Skin_setAttachment));
     cls->defineFunction("copySkin", _SE(js_cocos2dx_spine_Skin_copySkin));
     cls->defineFunction("findAttachmentsForSlot", _SE(js_cocos2dx_spine_Skin_findAttachmentsForSlot));
+	cls->defineFinalizeFunction(_SE(js_spine_Skin_finalize));
     cls->install();
     JSBClassType::registerClass<spine::Skin>(cls);
 

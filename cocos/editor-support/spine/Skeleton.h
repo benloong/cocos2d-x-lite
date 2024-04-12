@@ -127,6 +127,8 @@ public:
 	/// Sets a skin by name (see setSkin).
 	void setSkin(const String &skinName);
 
+	void fixSkinAttactments(Skeleton* other);
+
 	/// Attachments from the new skin are attached if the corresponding attachment from the old skin was attached.
 	/// If there was no old skin, each slot's setup mode attachment is attached from the new skin.
 	/// After changing the skin, the visible attachments can be reset to those attached in the setup pose by calling
