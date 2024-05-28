@@ -1014,6 +1014,61 @@ static bool js_loadImage(se::State& s)
 }
 SE_BIND_FUNC(js_loadImage)
 
+bool jsb_global_load_string(const std::string& path, const se::Value& callbackVal)
+{
+    if (path.empty()) {
+        se::ValueArray seArgs;
+        callbackVal.toObject()->call(seArgs, nullptr);
+        return true;
+    }
+
+    std::shared_ptr<se::Value> callbackPtr = std::make_shared<se::Value>(callbackVal);
+
+    auto pool = g_threadPool;
+    if (!pool)
+        return false;
+    pool->pushTask([=](int tid) {
+        std::string text = FileUtils::getInstance()->getStringFromFile(path);
+        Application::getInstance()->getScheduler()->performFunctionInCocosThread([=]() {
+            se::ScriptEngine::getInstance()->clearException();
+
+            se::AutoHandleScope scope;
+            se::ValueArray seArgs;
+            se::Value strVal { text };
+            seArgs.push_back(strVal);
+
+            bool succeed = callbackPtr->toObject()->call(seArgs, nullptr);
+            if (!succeed) {
+                se::ScriptEngine::getInstance()->clearException();
+            }
+        });
+    });
+
+    return true;
+}
+
+static bool js_load_string(se::State& s)
+{
+    const auto& args = s.args();
+    size_t argc = args.size();
+    CC_UNUSED bool ok = true;
+    if (argc == 2) {
+        std::string path;
+        ok &= seval_to_std_string(args[0], &path);
+        SE_PRECONDITION2(ok, false, "js_loadImage : Error processing arguments");
+
+        se::Value callbackVal = args[1];
+        assert(callbackVal.isObject());
+        assert(callbackVal.toObject()->isFunction());
+
+        return jsb_global_load_string(path, callbackVal);
+    }
+    SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 2);
+    return false;
+}
+SE_BIND_FUNC(js_load_string)
+
+
 //pixels(RGBA), width, height, fullFilePath(*.png/*.jpg)
 static bool js_saveImageData(se::State& s)
 {
@@ -1295,6 +1350,7 @@ bool jsb_register_global_variables(se::Object* global)
     __jsbObj->defineFunction("disableBatchGLCommandsToNative", _SE(js_disableBatchGLCommandsToNative));
     __jsbObj->defineFunction("openURL", _SE(JSB_openURL));
     __jsbObj->defineFunction("copyTextToClipboard", _SE(JSB_copyTextToClipboard));
+    __jsbObj->defineFunction("loadString", _SE(js_load_string));
 
     __jsbObj->defineFunction("setPreferredFramesPerSecond", _SE(JSB_setPreferredFramesPerSecond));
     __jsbObj->defineFunction("showInputBox", _SE(JSB_showInputBox));
